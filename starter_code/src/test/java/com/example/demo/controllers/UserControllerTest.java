@@ -2,10 +2,8 @@ package com.example.demo.controllers;
 
 import com.example.demo.model.persistence.User;
 import com.example.demo.model.requests.CreateUserRequest;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -25,7 +23,6 @@ public class UserControllerTest {
     @Autowired
     private UserController userController;
 
-
     @MockBean
     private BCryptPasswordEncoder encoder;
 
@@ -40,15 +37,10 @@ public class UserControllerTest {
 
     @Test
     public void createUser_HappyPath(){
-
-
         ResponseEntity<User> response = CreateUserAndGetUserResponseEntity();
-
         assertNotNull(response);
         assertEquals(200,response.getStatusCodeValue());
-
         User user = response.getBody();
-
         assertNotNull(user);
         assertEquals(USERNAME,user.getUsername());
         assertEquals(HASHEDPASSWORD,user.getPassword());

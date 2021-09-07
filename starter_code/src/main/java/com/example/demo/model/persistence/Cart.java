@@ -6,15 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -23,9 +15,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Cart {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id")
 	@JsonProperty
-	@Column
 	private Long id;
 	
 	@ManyToMany
@@ -33,7 +25,7 @@ public class Cart {
 	@Column
     private List<Item> items;
 	
-	@OneToOne(mappedBy = "cart")
+	@OneToOne(cascade = CascadeType.ALL,targetEntity = User.class)
 	@JsonProperty
     private User user;
 	
