@@ -54,6 +54,7 @@ public class UserController {
 		user.setCart(cart);
 		if(createUserRequest.getPassword().length()<4||
 				!createUserRequest.getPassword().equals(createUserRequest.getConfirmPassword())){
+			logger.info("User created failed: {}",user.getUsername());
 			return  ResponseEntity.badRequest().build();
 		}
 		user.setPassword(bCryptPasswordEncoder.encode(createUserRequest.getPassword()));
