@@ -39,7 +39,7 @@ public class CreateLogTest {
     @Autowired
     OrderController orderController;
 
-    @Test
+
     public void createLog(){
         try {
             firstNameReader = new BufferedReader(new FileReader("src/test/resources/firstnames.txt"));
