@@ -27,8 +27,8 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfo(
-                "car API",
-                "This API manages cars.",
+                "eCommerce  API",
+                "This API is an eCommerce interface.",
                 "1.0",
                 "http://www.adress.com/tos",
                 new Contact("Matthias Leutnant", "www.udacity.com", "name@host.com"),
