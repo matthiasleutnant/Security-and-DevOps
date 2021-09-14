@@ -8,6 +8,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,13 +21,13 @@ import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 
 @Component
 public class JWTAuthenticationVerficationFilter extends BasicAuthenticationFilter {
-	
+
 	public JWTAuthenticationVerficationFilter(AuthenticationManager authManager) {
         super(authManager);
     }
-	
+
 	@Override
-    protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain) 
+    protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain)
     		throws IOException, ServletException {
         String header = req.getHeader(SecurityConstants.HEADER_STRING);
 
@@ -44,9 +45,14 @@ public class JWTAuthenticationVerficationFilter extends BasicAuthenticationFilte
 	private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest req) {
 		String token = req.getHeader(SecurityConstants.HEADER_STRING);
         if (token != null) {
-            String user = JWT.require(HMAC512(SecurityConstants.SECRET.getBytes())).build()
-                    .verify(token.replace(SecurityConstants.TOKEN_PREFIX, ""))
-                    .getSubject();
+            String user = null;
+            try {
+                user = JWT.require(HMAC512(SecurityConstants.SECRET.getBytes())).build()
+                        .verify(token.replace(SecurityConstants.TOKEN_PREFIX, ""))
+                        .getSubject();
+            } catch (JWTVerificationException e) {
+                return null;
+            }
             if (user != null) {
                 return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
             }
