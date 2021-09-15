@@ -44,6 +44,14 @@ public class SecurityTest {
         sendCartRequestWithAuthentication(username, auth+"0");
     }
 
+    @Test
+    public void Login_wrong_password() throws Exception {
+        String username = "Franz";
+        String password = "password";
+        sendCreateUserRequest(username, password).andExpect(status().isOk());
+        sendUserLoginRequest(username, password+"2").andExpect(status().isOk());
+    }
+
     private ResultActions sendCartRequestWithAuthentication(String username, String auth) throws Exception {
         ModifyCartRequest request = new ModifyCartRequest();
         request.setUsername(username);
